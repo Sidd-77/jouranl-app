@@ -1,4 +1,3 @@
-// app/journal/layout.tsx
 import { cookies } from 'next/headers'
 import { verify } from 'jsonwebtoken'
 import { redirect } from 'next/navigation'
