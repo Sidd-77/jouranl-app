@@ -11,6 +11,9 @@ import {
   BoldItalicUnderlineToggles,
   CodeToggle,
   ListsToggle,
+  Separator,
+  StrikeThroughSupSubToggles,
+  InsertThematicBreak,
 } from "@mdxeditor/editor";
 import "@mdxeditor/editor/style.css";
 
@@ -70,8 +73,13 @@ export function Editor({ content, onChange, isLoading = false }: EditorProps) {
           <div className="flex flex-wrap gap-2 p-2 border-b">
           <BlockTypeSelect />
           <BoldItalicUnderlineToggles />
-          <CodeToggle />
+          <Separator />
+          <StrikeThroughSupSubToggles />
+          <Separator />
           <ListsToggle />
+          <Separator />
+          <InsertThematicBreak />
+          <CodeToggle />
           </div>
         ),
         }),
