@@ -9,9 +9,6 @@ import {
   toolbarPlugin,
   BlockTypeSelect,
   BoldItalicUnderlineToggles,
-  UndoRedo,
-  CreateLink,
-  InsertImage,
   CodeToggle,
   ListsToggle,
 } from "@mdxeditor/editor";
@@ -53,34 +50,34 @@ export function Editor({ content, onChange, isLoading = false }: EditorProps) {
   }
 
   return (
-    <div className="w-full h-full border rounded-lg">
+    <div className="w-full h-full border rounded-lg overflow-auto">
       <MDXEditor
-        ref={editorRef}
-        markdown={localContent}
-        onChange={handleChange}
-        plugins={[
-          headingsPlugin(),
-          listsPlugin(),
-          quotePlugin(),
-          markdownShortcutPlugin(),
-          markdownShortcutPlugin(),
-          headingsPlugin(),
-          listsPlugin(),
-          quotePlugin(),
-          thematicBreakPlugin(),
-          toolbarPlugin({
-            toolbarContents: () => (
-              <div className="flex flex-wrap gap-2 p-2 border-b">
-                <BlockTypeSelect />
-                <BoldItalicUnderlineToggles />
-                <CodeToggle />
-                <ListsToggle />
-              </div>
-            ),
-          }),
-        ]}
-        contentEditableClassName="prose max-w-none p-4 min-h-[calc(100vh-200px)]"
-        className="h-full max-w-none"
+      ref={editorRef}
+      markdown={localContent}
+      onChange={handleChange}
+      plugins={[
+        headingsPlugin(),
+        listsPlugin(),
+        quotePlugin(),
+        markdownShortcutPlugin(),
+        markdownShortcutPlugin(),
+        headingsPlugin(),
+        listsPlugin(),
+        quotePlugin(),
+        thematicBreakPlugin(),
+        toolbarPlugin({
+        toolbarContents: () => (
+          <div className="flex flex-wrap gap-2 p-2 border-b">
+          <BlockTypeSelect />
+          <BoldItalicUnderlineToggles />
+          <CodeToggle />
+          <ListsToggle />
+          </div>
+        ),
+        }),
+      ]}
+      contentEditableClassName="prose max-w-none p-4 min-h-[calc(100vh-200px)]"
+      className="h-full max-w-none"
       />
     </div>
   );
