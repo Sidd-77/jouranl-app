@@ -8,6 +8,7 @@ import DatePickerButton from "./DatePicker";
 import { Loader2, Save, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import Tasks from "./Tasks";
 
 type EntryState = {
   content: string;
@@ -29,6 +30,7 @@ export default function JournalPage() {
     null
   );
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isTaskSelected, setIsTaskSelected] = useState(false);
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
@@ -37,6 +39,10 @@ export default function JournalPage() {
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const toggleTaskSelected = () => {
+    setIsTaskSelected(!isTaskSelected);
   };
 
   const handleMobileDateSelect = async (newDate: string) => {
@@ -152,9 +158,8 @@ export default function JournalPage() {
       if (currentEntry.isDirty || currentEntry.isSaving) {
         await saveEntry(selectedDate, currentEntry.content);
       }
-
       setSelectedDate(newDate);
-
+      setIsTaskSelected(false);
       if (!entries[newDate]) {
         fetchEntry(newDate);
       }
@@ -236,7 +241,6 @@ export default function JournalPage() {
     }
   }, [selectedDate, entries, fetchEntry]);
 
-
   return (
     <div className="flex flex-col h-screen bg-white md:flex-row">
       {/* Mobile Header */}
@@ -258,6 +262,14 @@ export default function JournalPage() {
           onDateSelect={handleDateSelect}
         />
         <Button
+          onClick={handleManualSave}
+          disabled={!currentEntry.isDirty || currentEntry.isSaving}
+          size="sm"
+          variant="ghost"
+        >
+          <Save className="h-4 w-4" />
+        </Button>
+        <Button
           variant="ghost"
           size="sm"
           onClick={handleLogout}
@@ -278,6 +290,8 @@ export default function JournalPage() {
         <Sidebar
           selectedDate={selectedDate}
           onDateSelect={handleMobileDateSelect}
+          isTaskSelected={isTaskSelected}
+          toggleTaskSelected={toggleTaskSelected}
         />
       </div>
 
@@ -350,23 +364,19 @@ export default function JournalPage() {
               <div className="text-sm text-amber-600">Unsaved changes</div>
             )}
           </div>
-          <Button
-            onClick={handleManualSave}
-            disabled={!currentEntry.isDirty || currentEntry.isSaving}
-            size="sm"
-            variant="ghost"
-          >
-            <Save className="h-4 w-4" />
-          </Button>
         </div>
 
         {/* Editor Area */}
         <div className="flex-1 px-4 md:px-8 pb-4 md:pb-8 overflow-auto">
-          <Editor
-            content={currentEntry.content}
-            onChange={handleContentChange}
-            isLoading={isLoading}
-          />
+          {isTaskSelected ? (
+            <Tasks />
+          ) : (
+            <Editor
+              content={currentEntry.content}
+              onChange={handleContentChange}
+              isLoading={isLoading}
+            />
+          )}
         </div>
       </main>
     </div>
